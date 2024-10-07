@@ -76,6 +76,24 @@
             <p>Content: ${content}</p>
             <p>Label: ${label}`;
         });
+
+        document.getElementById("title").addEventListener("focus", function () {
+            this.style.backgroundColor = "#e0f7fa"; // creates light blue bcakground on focus
+        })
+
+        document.getElementById("title").addEventListener("blur", function () {
+            this.style.backgroundColor=""; // resets bcakground color on blur
+        })
+
+        document.getElementById("content").addEventListener("focus", function () {
+            this.style.backgroundColor= "#e0f7fa"; // creates light blue bcakground on focus
+        })
+
+        document.getElementById("content").addEventListener("blur", function () {
+            this.style.backgroundColor=""; // resets bcakground color on blur
+        })
+
+
     </script>
 </body>
 </html>
