@@ -14,12 +14,12 @@ function App() {
   const initialNote = {
     id: -1,
     title: "",
-    content:"",
+    content: "",
     label: Label.other,
-  }
+  };
   const [createNote, setCreateNote] = useState(initialNote);
   const [favorites, setFavorites] = useState<number[]>([]);
-
+  const [selectedNote, setSelectedNote] = useState<Note>(initialNote);
 
   function createNoteHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,22 +28,39 @@ function App() {
       title: createNote.title,
       content: createNote.content,
       label: createNote.label,
-    }
+    };
     setNotes([...notes, newNote]);
     setCreateNote(initialNote);
   }
 
   const favoriteClicker = (noteId: number) => {
     if (favorites.includes(noteId)) {
-      setFavorites(favorites.filter((id)=> id !== noteId));
+      setFavorites(favorites.filter((id) => id !== noteId));
     } else {
       setFavorites([...favorites, noteId]);
     }
   };
 
+  const deleteClicker = (noteId: number) => {
+    setNotes(notes.filter(note => note.id !== noteId));
+  }
+
   useEffect(() => {
-    console.log('The favorites list is:', favorites);
-  }, [favorites])
+    console.log("The favorites list is:", favorites);
+  }, [favorites]);
+
+  const noteEditor = (field: keyof Note, value: string) => {
+    if (selectedNote) {
+      const updatedNote = { ...selectedNote, [field]: value };
+      setSelectedNote(updatedNote);
+
+      setNotes(
+        notes.map((note) =>
+          note.id === selectedNote.id ? updatedNote : note
+        )
+      );
+    }
+  };
 
   return (
     <div className="app-container">
@@ -107,13 +124,32 @@ function App() {
           <div key={note.id} className="note-item">
             <div className="notes-header">
               <button onClick={() => favoriteClicker(note.id)}>
-                {favorites.includes(note.id) ? <IoHeart style={{color: "red"}}/> : <IoMdHeartEmpty/>}
+                {favorites.includes(note.id) ? (
+                  <IoHeart style={{ color: "red" }} />
+                ) : (
+                  <IoMdHeartEmpty />
+                )}
               </button>
-              <button>x</button>
+              <button onClick={ () => deleteClicker(note.id)}>x</button>
             </div>
-            <h2> {note.title} </h2>
-            <p> {note.content} </p>
-            <p> {note.label} </p>
+            <h2
+              contentEditable="true"
+              onBlur={(e) => noteEditor('title', e.currentTarget.textContent || '')}
+              onClick={() => setSelectedNote(note)}>
+              {note.title}
+            </h2>
+            <p
+              contentEditable="true"
+              onBlur={(e) => noteEditor('content', e.currentTarget.textContent || '')}
+              onClick={() => setSelectedNote(note)}>
+              {note.content}
+            </p>
+            <p
+              contentEditable="true"
+              onBlur={(e) => noteEditor('label', e.currentTarget.textContent || '')}
+              onClick={() => setSelectedNote(note)}>
+              {note.label}
+            </p>
           </div>
         ))}
       </div>
