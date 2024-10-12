@@ -79,6 +79,7 @@ select {
   padding: 10px;
   color: white;
   width: 100%;
+  margin-bottom: 15px;
 }
 
 .note-form button:hover {
