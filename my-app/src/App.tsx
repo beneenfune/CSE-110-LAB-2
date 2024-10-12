@@ -1,15 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
 import { Label, Note } from "./types"
 import { dummyNotesList } from './constants';
 import './App.css';
 import { useState, useEffect } from 'react';
 import { IoHeart } from "react-icons/io5";
 import { IoMdHeartEmpty } from "react-icons/io";
-
+import { ClickCounter } from "./starterFiles/hooksExercise";
+import ToggleTheme from "./starterFiles/hooksExercise";
 
 
 function App() {
+
   const [notes, setNotes] = useState(dummyNotesList);
   const initialNote = {
     id: -1,
@@ -120,6 +121,7 @@ function App() {
       </div>
 
       <div className="note-grid">
+        <ToggleTheme/>
         {notes.map((note) => (
           <div key={note.id} className="note-item">
             <div className="notes-header">
